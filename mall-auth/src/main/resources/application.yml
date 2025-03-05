@@ -1,0 +1,47 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-auth-api
+  cloud:
+    nacos:
+      config:
+        namespace: mall
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yaml
+        group: mall-cloud
+        enabled: true
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: mall
+  config:
+    import: nacos:mall-auth-api-dev.yaml
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  data:
+    redis:
+      database: 1
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PASSWORD}
+      timeout: 50000
+mybatis:
+  configLocation: classpath:/mybatis-config.xml
+
+server:
+  port: 8021
+
+logging:
+  level:
+    com:
+      ByteAndHeartDance:
+        mapper: debug
+
+mall:
+  mgt:
+    tokenSecret: ${TOKEN_SECRET}

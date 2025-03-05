@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试支付</title>
+</head>
+<body>
+标题：<input type="text" name="subject" value="123456789"></br>
+订单号：<input type="text" name="orderId" value="1"></br>
+总价格：<input type="text" name="total" value="100"></br>
+商户订单号：<input type="text" name="alipayTraceNo" value=""></br>
+<button id="pay">去支付</button>
+</br>
+<button id="return">退款</button>
+<script>
+document.getElementById("pay").addEventListener("click", function () {
+    // http://124.221.142.75:50010
+    window.location.href= "http://124.221.142.75:50010/alipay/pay?subject=" + document.getElementsByName("subject")[0].value
+        + "&traceNo=" + document.getElementsByName("orderId")[0].value
+        + "&totalAmount=" + document.getElementsByName("total")[0].value;
+});
+document.getElementById("return").addEventListener("click", function () {
+    // http://124.221.142.75:50010
+    window.location.href= "http://124.221.142.75:50010/alipay/return?subject=" + document.getElementsByName("subject")[0].value
+        + "&traceNo=" + document.getElementsByName("orderId")[0].value
+        + "&totalAmount=" + document.getElementsByName("total")[0].value
+        + "&alipayTraceNo=" + document.getElementsByName("alipayTraceNo")[0].value;
+});
+</script>
+</body>
+</html>

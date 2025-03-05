@@ -1,0 +1,46 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  profiles:
+    active: dev
+  application:
+    name: mall-shoppingcart-api
+  cloud:
+    nacos:
+      config:
+        namespace: mall
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yaml
+        group: mall-cloud
+        enabled: true
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: mall
+  config:
+    import: nacos:mall-shoppingcart-api-dev.yaml
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    data:
+      redis:
+        database: 1
+        host: ${REDIS_HOST}
+        port: 6379
+        username: ${REDIS_USERNAME}
+        password: ${REDIS_PASSWORD}
+        timeout: 50000
+mybatis:
+  configLocation: classpath:/mybatis-config.xml
+logging:
+  level:
+    com:
+      ByteAndHeartDance:
+        mapper: debug
+
+server:
+  port: 8027
+mall:
+  mgt:
+    tokenSecret: ${MALL_TOKEN_SECRET}

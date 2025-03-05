@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ByteAndHeartDance.order.mapper.order.TradeMapper">
+
+    <resultMap type="com.ByteAndHeartDance.order.entity.order.trade.TradeEntity" id="TradeResult">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="orderStatus" column="order_status" />
+        <result property="payStatus" column="pay_status" />
+<!--        <result property="orderStatus" column="order_status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.ByteAndHeartDance.enums.OrderStatusEnum"/>-->
+<!--        <result property="payStatus" column="pay_status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.ByteAndHeartDance.order.enums.PayStatusEnum"/>-->
+        <result property="totalAmount" column="total_amount"/>
+        <result property="paymentAmount" column="payment_amount"/>
+        <result property="remark" column="remark"/>
+        <result property="deliveryAddressId" column="delivery_address_id"/>
+        <result property="alipayTraceNo" column="alipay_trace_no"/>
+        <result property="payType" column="pay_type" />
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+    <sql id="selectTradeColumn">
+        id,
+         code,
+         user_id,
+         user_name,
+         order_time,
+         order_status,
+         pay_status,
+         total_amount,
+         payment_amount,
+         remark,
+         delivery_address_id,
+         alipay_trace_no,
+        pay_type,
+         create_user_id,
+         create_user_name,
+         create_time,
+         update_user_id,
+         update_user_name,
+         update_time,
+         is_del
+    </sql>
+
+
+    <sql id="queryWhere">
+        <where>
+
+            <if test="id != null ">
+                AND id = #{id}
+            </if>
+
+            <if test="code != null  and code != ''">
+                AND code = #{code}
+            </if>
+
+            <if test="userId != null ">
+                AND user_id = #{userId}
+            </if>
+
+            <if test="userName != null  and userName != ''">
+                AND user_name = #{userName}
+            </if>
+
+            <if test="orderTime != null ">
+                AND order_time = #{orderTime}
+            </if>
+
+            <if test="orderStatus != null ">
+                AND order_status = #{orderStatus}
+            </if>
+
+
+            <if test="payStatus != null ">
+                AND pay_status = #{payStatus}
+            </if>
+
+            <if test="totalAmount != null ">
+                AND total_amount = #{totalAmount}
+            </if>
+
+            <if test="paymentAmount != null ">
+                AND payment_amount = #{paymentAmount}
+            </if>
+
+            <if test="remark != null  and remark != ''">
+                AND remark = #{remark}
+            </if>
+
+            <if test="deliveryAddressId != null ">
+                AND delivery_address_id = #{deliveryAddressId}
+            </if>
+            <if test="alipayTraceNo != null  and alipayTraceNo != ''">
+                AND alipay_trace_no = #{alipayTraceNo}
+            </if>
+            <if test="payType != null ">
+                AND pay_type = #{payType}
+            </if>
+
+            <if test="createUserId != null ">
+                AND create_user_id = #{createUserId}
+            </if>
+
+            <if test="createUserName != null  and createUserName != ''">
+                AND create_user_name = #{createUserName}
+            </if>
+
+            <if test="createTime != null ">
+                AND create_time = #{createTime}
+            </if>
+
+            <if test="updateUserId != null ">
+                AND update_user_id = #{updateUserId}
+            </if>
+
+            <if test="updateUserName != null  and updateUserName != ''">
+                AND update_user_name = #{updateUserName}
+            </if>
+
+            <if test="updateTime != null ">
+                AND update_time = #{updateTime}
+            </if>
+
+            <if test="isDel != null ">
+                AND is_del = #{isDel}
+            </if>
+            AND is_del = 0
+        </where>
+    </sql>
+    <!--    ==增删查改== -->
+    <insert id="insert" parameterType="com.ByteAndHeartDance.order.entity.order.trade.TradeEntity" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO order_trade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            code,
+            <if test="userId != null ">
+                user_id,
+            </if>
+            <if test="userName != null  and userName != ''">
+                user_name,
+            </if>
+            <if test="orderTime != null ">
+                order_time,
+            </if>
+            <if test="orderStatus != null ">
+                order_status,
+            </if>
+            <if test="payStatus != null ">
+                pay_status,
+            </if>
+            <if test="totalAmount != null ">
+                total_amount,
+            </if>
+            <if test="paymentAmount != null ">
+                payment_amount,
+            </if>
+            <if test="remark != null  and remark != ''">
+                remark,
+            </if>
+            <if test="deliveryAddressId != null ">
+                delivery_address_id,
+            </if>
+            <if test="alipayTraceNo != null  and alipayTraceNo != ''">
+                alipay_trace_no,
+            </if>
+            <if test="payType != null ">
+                pay_type,
+            </if>
+            create_user_id,
+            create_user_name,
+            create_time,
+            <if test="updateUserId != null ">
+                update_user_id,
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                update_user_name,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="isDel != null ">
+                is_del,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <choose>
+                <when test="id != null">
+                    #{code},
+                </when>
+                <otherwise>
+                    #{id},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="code != null  and code != ''">
+                    #{code},
+                </when>
+                <otherwise>
+                    #{GENERATE_ID},
+                </otherwise>
+            </choose>
+            <if test="userId != null ">
+                #{userId},
+            </if>
+            <if test="userName != null  and userName != ''">
+                #{userName},
+            </if>
+            <if test="orderTime != null ">
+                #{orderTime},
+            </if>
+            <if test="orderStatus != null ">
+                #{orderStatus},
+            </if>
+            <if test="payStatus != null ">
+                #{payStatus},
+            </if>
+            <if test="totalAmount != null ">
+                #{totalAmount},
+            </if>
+            <if test="paymentAmount != null ">
+                #{paymentAmount},
+            </if>
+            <if test="remark != null  and remark != ''">
+                #{remark},
+            </if>
+            <if test="deliveryAddressId != null ">
+                #{deliveryAddressId},
+            </if>
+            <if test="alipayTraceNo != null  and alipayTraceNo != ''">
+                #{alipayTraceNo},
+            </if>
+            <if test="payType != null ">
+                #{payType}
+            </if>
+            #{CURRENT_USER_ID},
+            #{CURRENT_USER_NAME},
+            now(3),
+            <if test="updateUserId != null ">
+                #{updateUserId},
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                #{updateUserName},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime},
+            </if>
+            <if test="isDel != null ">
+                #{isDel},
+            </if>
+        </trim>
+
+    </insert>
+
+    <!--    删除-->
+    <delete id="deleteByIds">
+        UPDATE order_trade
+        SET is_del =
+        1,update_time=now(3),update_user_id=#{entity.updateUserId},update_user_name=#{entity.updateUserName}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <!--    修改订单-->
+    <update id="update" parameterType="com.ByteAndHeartDance.order.entity.order.trade.TradeEntity">
+        UPDATE order_trade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null ">
+                user_id = #{userId},
+            </if>
+            <if test="userName != null  and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="orderTime != null ">
+                order_time = #{orderTime},
+            </if>
+            <if test="orderStatus != null ">
+                order_status = #{orderStatus},
+            </if>
+            <if test="payStatus != null ">
+                pay_status = #{payStatus},
+            </if>
+            <if test="totalAmount != null ">
+                total_amount = #{totalAmount},
+            </if>
+            <if test="paymentAmount != null ">
+                payment_amount = #{paymentAmount},
+            </if>
+            <if test="remark != null  and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="deliveryAddressId != null ">
+                delivery_address_id = #{deliveryAddressId},
+            </if>
+            <if test="alipayTraceNo != null  and alipayTraceNo != ''">
+                alipay_trace_no = #{alipayTraceNo},
+            </if>
+            <if test="payType != null ">
+                pay_type = #{payType},
+            </if>
+            <choose>
+                <when test="updateUserId != null">
+                    update_user_id = #{updateUserId},
+                </when>
+                <otherwise>
+                    update_user_id = #{CURRENT_USER_ID},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="updateUserName != null and updateUserName != ''">
+                    update_user_name = #{updateUserName},
+                </when>
+                <otherwise>
+                    update_user_name = #{CURRENT_USER_NAME},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="updateTime != null">
+                    update_time = #{updateTime},
+                </when>
+                <otherwise>
+                    update_time = now(3),
+                </otherwise>
+            </choose>
+            <if test="isDel != null ">
+                is_del = #{isDel},
+            </if>
+
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!--    查询-->
+    <!--    根据ID查订单-->
+    <select id="findById" parameterType="Long"
+            resultMap="TradeResult">
+        SELECT
+        <include refid="selectTradeColumn"/>
+        FROM order_trade
+        WHERE id = #{id}
+    </select>
+    <!--    批量查询订单-->
+    <select id="findByIds" parameterType="Long"
+            resultMap="TradeResult">
+        SELECT
+        <include refid="selectTradeColumn"/>
+        FROM order_trade
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
+
+    <!--    根据条件查询总数-->
+    <select id="searchCount"
+            parameterType="com.ByteAndHeartDance.order.entity.order.trade.TradeConditionEntity"
+            resultType="int">
+        SELECT
+        COUNT(*)
+        FROM order_trade
+        <include refid="queryWhere"/>
+    </select>
+
+    <!--    根据条件查询-->
+    <select id="searchByCondition"
+            parameterType="com.ByteAndHeartDance.order.entity.order.trade.TradeConditionEntity"
+            resultMap="TradeResult">
+        SELECT
+        <include refid="selectTradeColumn"/>
+        FROM order_trade
+        <include refid="queryWhere"/>
+        <include refid="com.ByteAndHeartDance.order.mapper.BaseMapper.paginationSql"/>
+    </select>
+
+
+
+</mapper>

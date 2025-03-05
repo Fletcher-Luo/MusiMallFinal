@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-pay-api
+  cloud:
+    nacos:
+      config:
+        namespace: mall
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yaml
+        group: mall-cloud
+        enabled: true
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: mall
+  config:
+    import: nacos:mall-pay-api-dev.yaml
+datasource:
+  url: ${MYSQL_URL}
+  username: ${MYSQL_USERNAME}
+  password: ${MYSQL_PASSWORD}
+
+server:
+  port: 50010
+mall:
+  mgt:
+    aliPayConfig:
+      protocol: https
+      gatewayHost: openapi-sandbox.dl.alipaydev.com
+      signType: RSA2
+      appId: ${ALIPAY_APP_ID}
+      privateKey: ${ALIPAY_PRIVATE_KEY}
+      publicKey: ${ALIPAY_PUBLIC_KEY}
+      notifyUrl: ${ALIPAY_NOTIFY_URL}

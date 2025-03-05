@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ByteAndHeartDance.order.mapper.address.DeliveryAddressMapper">
+
+    <resultMap type="com.ByteAndHeartDance.order.entity.address.deliveryAddress.DeliveryAddressEntity"
+               id="DeliveryAddressResult">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="receiverName" column="receiver_name"/>
+        <result property="receiverPhone" column="receiver_phone"/>
+        <result property="provinceId" column="province_id"/>
+        <result property="province" column="province"/>
+        <result property="cityId" column="city_id"/>
+        <result property="city" column="city"/>
+        <result property="districtId" column="district_id"/>
+        <result property="district" column="district"/>
+        <result property="detailAddress" column="detail_address"/>
+        <result property="postCode" column="post_code"/>
+        <result property="addressIsDefault" column="address_is_default"/>
+
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+    <sql id="selectDeliveryAddressColumn">
+        id,
+         user_id,
+         receiver_name,
+         receiver_phone,
+         province_id,
+         province,
+         city_id,
+         city,
+         district_id,
+         district,
+         detail_address,
+         post_code,
+         address_is_default,
+         create_user_id,
+         create_user_name,
+         create_time,
+         update_user_id,
+         update_user_name,
+         update_time,
+         is_del
+    </sql>
+
+
+    <sql id="queryWhere">
+        <where>
+
+            <if test="id != null ">
+                AND id = #{id}
+            </if>
+
+
+            <if test="userId != null ">
+                AND user_id = #{userId}
+            </if>
+
+            <if test="receiverName != null  and receiverName != ''">
+                AND receiver_name = #{receiverName}
+            </if>
+            <if test="receiverPhone != null  and receiverPhone != ''">
+                AND receiver_phone = #{receiverPhone}
+            </if>
+            <if test="provinceId != null ">
+                AND province_id = #{provinceId}
+            </if>
+            <if test="province != null  and province != ''">
+                AND province = #{province}
+            </if>
+            <if test="cityId != null ">
+                AND city_id = #{cityId}
+            </if>
+            <if test="city != null  and city != ''">
+                AND city = #{city}
+            </if>
+            <if test="districtId != null ">
+                AND district_id = #{districtId}
+            </if>
+            <if test="district != null  and district != ''">
+                AND district = #{district}
+            </if>
+            <if test="detailAddress != null  and detailAddress != ''">
+                AND detail_address = #{detailAddress}
+            </if>
+            <if test="postCode != null  and postCode != ''">
+                AND post_code = #{postCode}
+            </if>
+            <if test="addressIsDefault != null ">
+                AND address_is_default = #{addressIsDefault}
+            </if>
+
+            <if test="createUserId != null ">
+                AND create_user_id = #{createUserId}
+            </if>
+
+            <if test="createUserName != null  and createUserName != ''">
+                AND create_user_name = #{createUserName}
+            </if>
+
+            <if test="createTime != null ">
+                AND create_time = #{createTime}
+            </if>
+
+            <if test="updateUserId != null ">
+                AND update_user_id = #{updateUserId}
+            </if>
+
+            <if test="updateUserName != null  and updateUserName != ''">
+                AND update_user_name = #{updateUserName}
+            </if>
+
+            <if test="updateTime != null ">
+                AND update_time = #{updateTime}
+            </if>
+
+            <if test="isDel != null ">
+                AND is_del = #{isDel}
+            </if>
+            AND is_del = 0
+        </where>
+    </sql>
+    <!--    ==增删查改== -->
+    <insert id="insert" parameterType="com.ByteAndHeartDance.order.entity.address.deliveryAddress.DeliveryAddressEntity"
+            useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO delivery_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+
+            <if test="userId != null ">
+                user_id,
+            </if>
+            <if test="receiverName != null  and receiverName != ''">
+                receiver_name,
+            </if>
+            <if test="receiverPhone != null  and receiverPhone != ''">
+                receiver_phone,
+            </if>
+            <if test="provinceId != null ">
+                province_id,
+            </if>
+            <if test="province != null  and province != ''">
+                province,
+            </if>
+            <if test="cityId != null ">
+                city_id,
+            </if>
+            <if test="city != null  and city != ''">
+                city,
+            </if>
+            <if test="districtId != null ">
+                district_id,
+            </if>
+            <if test="district != null  and district != ''">
+                district,
+            </if>
+            <if test="detailAddress != null  and detailAddress != ''">
+                detail_address,
+            </if>
+            <if test="postCode != null  and postCode != ''">
+                post_code,
+            </if>
+            <if test="addressIsDefault != null ">
+                address_is_default,
+            </if>
+            create_user_id,
+            create_user_name,
+            create_time,
+            <if test="updateUserId != null ">
+                update_user_id,
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                update_user_name,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="isDel != null ">
+                is_del,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <choose>
+                <when test="id == null">
+                    #{GENERATE_ID},
+                </when>
+                <otherwise>
+                    #{id},
+                </otherwise>
+            </choose>
+
+            <if test="userId != null ">
+                #{userId},
+            </if>
+            <if test="receiverName != null  and receiverName != ''">
+                #{receiverName},
+            </if>
+            <if test="receiverPhone != null  and receiverPhone != ''">
+                #{receiverPhone},
+            </if>
+            <if test="provinceId != null ">
+                #{provinceId},
+            </if>
+            <if test="province != null  and province != ''">
+                #{province},
+            </if>
+            <if test="cityId != null ">
+                #{cityId},
+            </if>
+            <if test="city != null  and city != ''">
+                #{city},
+            </if>
+            <if test="districtId != null ">
+                #{districtId},
+            </if>
+            <if test="district != null  and district != ''">
+                #{district},
+            </if>
+            <if test="detailAddress != null  and detailAddress != ''">
+                #{detailAddress},
+            </if>
+            <if test="postCode != null  and postCode != ''">
+                #{postCode},
+            </if>
+            <if test="addressIsDefault != null ">
+                #{addressIsDefault},
+            </if>
+            #{CURRENT_USER_ID},
+            #{CURRENT_USER_NAME},
+            now(3),
+            <if test="updateUserId != null ">
+                #{updateUserId},
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                #{updateUserName},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime},
+            </if>
+            <if test="isDel != null ">
+                #{isDel},
+            </if>
+        </trim>
+
+    </insert>
+
+    <!--    删除-->
+    <delete id="deleteByIds">
+        UPDATE delivery_address
+        SET is_del =
+        1,update_time=now(3),update_user_id=#{entity.updateUserId},update_user_name=#{entity.updateUserName}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <!--    修改-->
+    <update id="update"
+            parameterType="com.ByteAndHeartDance.order.entity.address.deliveryAddress.DeliveryAddressEntity">
+        UPDATE delivery_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null ">
+                user_id = #{userId},
+            </if>
+
+            <if test="receiverName != null  and receiverName != ''">
+                receiver_name = #{receiverName},
+            </if>
+            <if test="receiverPhone != null  and receiverPhone != ''">
+                receiver_phone = #{receiverPhone},
+            </if>
+            <if test="provinceId != null ">
+                province_id = #{provinceId},
+            </if>
+
+            <if test="province != null  and province != ''">
+                province = #{province},
+            </if>
+            <if test="cityId != null ">
+                city_id = #{cityId},
+            </if>
+            <if test="city != null  and city != ''">
+                city = #{city},
+            </if>
+            <if test="districtId != null ">
+                district_id = #{districtId},
+            </if>
+            <if test="district != null  and district != ''">
+                district = #{district},
+            </if>
+            <if test="detailAddress != null  and detailAddress != ''">
+                detail_address = #{detailAddress},
+            </if>
+            <if test="postCode != null  and postCode != ''">
+                post_code = #{postCode},
+            </if>
+            <if test="addressIsDefault != null ">
+                address_is_default = #{addressIsDefault},
+            </if>
+
+            <choose>
+                <when test="updateUserId != null">
+                    update_user_id = #{updateUserId},
+                </when>
+                <otherwise>
+                    update_user_id = #{CURRENT_USER_ID},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="updateUserName != null and updateUserName != ''">
+                    update_user_name = #{updateUserName},
+                </when>
+                <otherwise>
+                    update_user_name = #{CURRENT_USER_NAME},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="updateTime != null">
+                    update_time = #{updateTime},
+                </when>
+                <otherwise>
+                    update_time = now(3),
+                </otherwise>
+            </choose>
+            <if test="isDel != null ">
+                is_del = #{isDel},
+            </if>
+
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+
+    <!--    查询-->
+    <!--    根据ID查-->
+    <select id="findById" parameterType="Long"
+            resultMap="DeliveryAddressResult">
+        SELECT
+        <include refid="selectDeliveryAddressColumn"/>
+        FROM delivery_address
+        WHERE id = #{id}
+    </select>
+    <!--    批量查询订单-->
+    <select id="findByIds" parameterType="Long"
+            resultMap="DeliveryAddressResult">
+        SELECT
+        <include refid="selectDeliveryAddressColumn"/>
+        FROM delivery_address
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <!--    根据条件查询总数-->
+    <select id="searchCount"
+            parameterType="com.ByteAndHeartDance.order.entity.address.deliveryAddress.DeliveryAddressConditionEntity"
+            resultType="int">
+        SELECT
+        COUNT(*)
+        FROM delivery_address
+        <include refid="queryWhere"/>
+    </select>
+
+    <!--    根据条件查询-->
+    <select id="searchByCondition"
+            parameterType="com.ByteAndHeartDance.order.entity.address.deliveryAddress.DeliveryAddressConditionEntity"
+            resultMap="DeliveryAddressResult">
+        SELECT
+        <include refid="selectDeliveryAddressColumn"/>
+        FROM delivery_address
+        <include refid="queryWhere"/>
+        <include refid="com.ByteAndHeartDance.order.mapper.BaseMapper.paginationSql"/>
+    </select>
+
+
+</mapper>

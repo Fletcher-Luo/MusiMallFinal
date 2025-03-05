@@ -1,0 +1,60 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-order-api
+  cloud:
+    nacos:
+      config:
+        namespace: mall
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yaml
+        group: mall-cloud
+        enabled: true
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: mall
+  config:
+    import: nacos:mall-order-api-dev.yaml
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    data:
+      redis:
+        database: 1
+        host: ${REDIS_HOST}
+        port: 6379
+        password: ${REDIS_PASSWORD}
+        timeout: 50000
+    rabbitmq:
+      host: ${RABBITMQ_HOST}
+      port: 5672
+      username: ${RABBITMQ_USERNAME}
+      password: ${RABBITMQ_PASSWORD}
+mybatis:
+  configLocation: classpath:/mybatis-config.xml
+
+logging:
+  level:
+    com:
+      ByteAndHeartDance:
+        mapper: debug
+
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+  sentinel:
+    enabled: true
+
+server:
+  port: 8023
+mall:
+  mgt:
+    tokenSecret: ${MALL_TOKEN_SECRET}

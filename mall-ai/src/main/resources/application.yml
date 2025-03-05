@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mall-ai-api
+  ai:
+    minimax:
+      api-key: ${AI_MINIMAX_API_KEY}
+      chat:
+        options:
+          model: abab6.5s-chat
+  cloud:
+    nacos:
+      config:
+        namespace: mall
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yaml
+        group: mall-cloud
+        enabled: true
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: mall
+  config:
+    import: nacos:mall-ai-api-dev.yaml
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+server:
+  port: 9555

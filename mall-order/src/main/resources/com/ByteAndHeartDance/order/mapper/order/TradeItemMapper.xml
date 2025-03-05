@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ByteAndHeartDance.order.mapper.order.TradeItemMapper">
+
+    <resultMap type="com.ByteAndHeartDance.order.entity.order.tradeItem.TradeItemEntity" id="TradeItemResult">
+        <result property="id" column="id"/>
+        <result property="tradeId" column="trade_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="model" column="model"/>
+        <result property="price" column="price"/>
+        <result property="quantity" column="quantity"/>
+        <result property="amount" column="amount"/>
+        <result property="picture" column="picture"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+
+
+    <sql id="selectTradeItemColumn">
+         id,
+         trade_id,
+         product_id,
+         product_name,
+         model,
+         price,
+         quantity,
+         amount,
+         picture,
+         create_user_id,
+         create_user_name,
+         create_time,
+         update_user_id,
+         update_user_name,
+         update_time,
+         is_del
+    </sql>
+
+
+    <sql id="queryWhere">
+        <where>
+            <if test="id != null ">
+                AND id = #{id}
+            </if>
+
+            <if test="tradeId != null ">
+                AND trade_id = #{tradeId}
+            </if>
+            <if test="productId != null ">
+                AND product_id = #{productId}
+            </if>
+
+            <if test="productName != null ">
+                AND product_name = #{productName}
+            </if>
+
+            <if test="model != null ">
+                AND model = #{model}
+            </if>
+
+            <if test="price != null ">
+                AND price = #{price}
+            </if>
+
+            <if test="quantity != null ">
+                AND quantity = #{quantity}
+            </if>
+
+            <if test="amount != null ">
+                AND amount = #{amount}
+            </if>
+
+            <if test="picture != null and picture!='' ">
+                AND picture = #{picture}
+            </if>
+
+            <if test="createUserId != null ">
+                AND create_user_id = #{createUserId}
+            </if>
+
+            <if test="createUserName != null  and createUserName != ''">
+                AND create_user_name = #{createUserName}
+            </if>
+
+            <if test="createTime != null ">
+                AND create_time = #{createTime}
+            </if>
+
+            <if test="updateUserId != null ">
+                AND update_user_id = #{updateUserId}
+            </if>
+
+            <if test="updateUserName != null  and updateUserName != ''">
+                AND update_user_name = #{updateUserName}
+            </if>
+
+            <if test="updateTime != null ">
+                AND update_time = #{updateTime}
+            </if>
+
+            <if test="isDel != null ">
+                AND is_del = #{isDel}
+            </if>
+            AND is_del = 0
+        </where>
+    </sql>
+    <!--    ==增删查改== -->
+    <!--    根据ID查询数据-->
+    <select id="findById" parameterType="Long"
+            resultMap="TradeItemResult">
+        SELECT
+        <include refid="selectTradeItemColumn"/>
+        FROM order_trade_item
+        WHERE id = #{id}
+    </select>
+    <!--    根据tradeID查询数据-->
+    <select id="findByTradeId" parameterType="Long"
+            resultMap="TradeItemResult">
+        SELECT
+        <include refid="selectTradeItemColumn"/>
+        FROM order_trade_item
+        WHERE trade_id = #{tradeId}
+    </select>
+    <!--    根据ID批量查询数据-->
+    <select id="findByTradeIds" parameterType="List"
+            resultMap="TradeItemResult">
+        SELECT
+        <include refid="selectTradeItemColumn"/>
+        FROM order_trade_item
+        WHERE trade_id IN
+        <foreach collection="tradeIds" item="trade_id" open="(" close=")" separator=",">
+            #{trade_id}
+        </foreach>
+    </select>
+    <select id="findByIds" parameterType="Long"
+            resultMap="TradeItemResult">
+        SELECT
+        <include refid="selectTradeItemColumn"/>
+        FROM order_trade_item
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="searchByCondition"
+            parameterType="com.ByteAndHeartDance.order.entity.order.tradeItem.TradeItemEntity"
+            resultMap="TradeItemResult">
+        SELECT
+        <include refid="selectTradeItemColumn"/>
+        FROM order_trade_item
+        <include refid="queryWhere"/>
+        <include refid="com.ByteAndHeartDance.order.mapper.BaseMapper.paginationSql"/>
+    </select>
+    <select id="searchCount"
+            parameterType="com.ByteAndHeartDance.order.entity.order.tradeItem.TradeItemEntity"
+            resultType="int">
+        SELECT
+        COUNT(*)
+        FROM order_trade_item
+        <include refid="queryWhere"/>
+    </select>
+
+    <!--    更新订单项-->
+    <update id="update" parameterType="com.ByteAndHeartDance.order.entity.order.tradeItem.TradeItemEntity">
+        UPDATE order_trade_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tradeId != null ">
+                trade_id = #{tradeId},
+            </if>
+            <if test="productId != null ">
+                product_id = #{productId},
+            </if>
+            <if test="productName != null ">
+                product_name = #{productName},
+            </if>
+            <if test="model != null ">
+                model = #{model},
+            </if>
+            <if test="price != null ">
+                price = #{price},
+            </if>
+            <if test="quantity != null ">
+                quantity = #{quantity},
+            </if>
+            <if test="amount != null ">
+                amount = #{amount},
+            </if>
+            <if test="picture != null and picture!='' ">
+                AND picture = #{picture}
+            </if>
+            <if test="createUserId != null ">
+                create_user_id = #{createUserId},
+            </if>
+            <if test="createUserName != null  and createUserName != ''">
+                create_user_name = #{createUserName},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <choose>
+                <when test="updateUserId != null">
+                    update_user_id = #{updateUserId},
+                </when>
+                <otherwise>
+                    update_user_id = #{CURRENT_USER_ID},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="updateUserName != null and updateUserName != ''">
+                    update_user_name = #{updateUserName},
+                </when>
+                <otherwise>
+                    update_user_name = #{CURRENT_USER_NAME},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="updateTime != null">
+                    update_time = #{updateTime},
+                </when>
+                <otherwise>
+                    update_time = now(3),
+                </otherwise>
+            </choose>
+            <if test="isDel != null ">
+                is_del = #{isDel},
+            </if>
+
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!--    删除订单项-->
+    <delete id="deleteByIds">
+        UPDATE order_trade_item
+        SET is_del =
+        1,update_time=now(3),update_user_id=#{entity.updateUserId},update_user_name=#{entity.updateUserName}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--    新增订单项-->
+    <insert id="insert" parameterType="com.ByteAndHeartDance.order.entity.order.tradeItem.TradeItemEntity">
+        INSERT INTO order_trade_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="tradeId != null ">
+                trade_id,
+            </if>
+            <if test="productId != null ">
+                product_id,
+            </if>
+            <if test="productName != null ">
+                product_name,
+            </if>
+            <if test="model != null ">
+                model,
+            </if>
+            <if test="price != null ">
+                price,
+            </if>
+
+            <if test="quantity != null ">
+                quantity,
+            </if>
+            <if test="amount != null ">
+                amount,
+            </if>
+            <if test="picture != null and picture!='' ">
+                AND picture = #{picture}
+            </if>
+            create_user_id,
+            create_user_name,
+            create_time,
+            <if test="updateUserId != null ">
+                update_user_id,
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                update_user_name,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="isDel != null ">
+                is_del,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{GENERATE_ID},
+            <if test="tradeId != null ">
+                #{tradeId},
+            </if>
+            <if test="productId != null ">
+                #{productId},
+            </if>
+            <if test="productName != null ">
+                #{productName},
+            </if>
+            <if test="model != null ">
+                #{model},
+            </if>
+            <if test="price != null ">
+                #{price},
+            </if>
+
+            <if test="quantity != null ">
+                #{quantity},
+            </if>
+            <if test="amount != null ">
+                #{amount},
+            </if>
+            <if test="picture != null and picture!='' ">
+                AND picture = #{picture}
+            </if>
+            #{CURRENT_USER_ID},
+            #{CURRENT_USER_NAME},
+            now(3),
+            <if test="updateUserId != null ">
+                #{updateUserId},
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                #{updateUserName},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime},
+            </if>
+            <if test="isDel != null ">
+                #{isDel},
+            </if>
+
+        </trim>
+    </insert>
+
+    <!--    批量新增    -->
+    <insert id="batchInsert" parameterType="com.ByteAndHeartDance.order.entity.order.tradeItem.TradeItemEntity">
+        INSERT INTO order_trade_item
+        (
+        id,
+        trade_id,
+        product_id,
+        product_name,
+        model,
+        price,
+        quantity,
+        amount,
+        picture,
+        create_user_id,
+        create_user_name,
+        create_time,
+        is_del
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.tradeId},
+            #{item.productId},
+            #{item.productName},
+            #{item.model},
+            #{item.price},
+            #{item.quantity},
+            #{item.amount},
+            #{item.picture},
+            #{CURRENT_USER_ID},
+            #{CURRENT_USER_NAME},
+            now(3),
+            0
+            )
+        </foreach>
+    </insert>
+
+
+
+
+
+</mapper>

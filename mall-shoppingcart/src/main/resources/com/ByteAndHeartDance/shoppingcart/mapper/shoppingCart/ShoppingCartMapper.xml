@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ByteAndHeartDance.shoppingcart.mapper.shoppingCart.ShoppingCartMapper">
+    <!--    购物车表-->
+    <resultMap type="com.ByteAndHeartDance.shoppingcart.entity.ShoppingCartEntity" id="ShoppingCartResult">
+        <result property="id" column="id"/>
+        <result property="productId" column="product_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="quantity" column="quantity"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+    <!--    分页-->
+    <sql id="paginationSql">
+        LIMIT #{pageBegin} , #{pageSize}
+    </sql>
+    <!--    列名-->
+    <sql id="selectShoppingCartColumn">
+        id,
+        product_id,
+        user_id,
+        quantity,
+        create_user_id,
+        create_user_name,
+        create_time,
+        update_user_id,
+        update_user_name,
+        update_time,
+        is_del
+    </sql>
+    <!--    查询条件-->
+    <sql id="queryWhere">
+        <where>
+            <!-- idList不为空，遍历idList -->
+            <if test="idList != null and idList.size()>0">
+                AND id IN
+                <foreach collection="idList" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <!-- 创建/插入开始时间不为空，创建时间>=给定时间 -->
+            <if test="createBeginTime != null and createBeginTime !=''">
+                AND create_time >= #{createBeginTime}
+            </if>
+            <!-- 创建/插入结束时间不为空，创建时间<给定时间 -->
+            <if test="createEndTime != null and createEndTime !=''">
+                AND create_time <![CDATA[<]]> #{createEndTime}
+            </if>
+            <!-- id不为空,根据id查询 -->
+            <if test="id != null ">
+                AND id = #{id}
+            </if>
+            <!-- productId不为空,根据productId查询 -->
+            <if test="productId != null ">
+                AND product_id = #{productId}
+            </if>
+
+            <if test="userId != null ">
+                AND user_id = #{userId}
+            </if>
+            <if test="quantity != null ">
+                AND quantity = #{quantity}
+            </if>
+
+            <if test="createUserId != null ">
+                AND create_user_id = #{createUserId}
+            </if>
+            <if test="createUserName != null  and createUserName != ''">
+                AND create_user_name = #{createUserName}
+            </if>
+            <if test="updateUserId != null ">
+                AND update_user_id = #{updateUserId}
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                AND update_user_name = #{updateUserName}
+            </if>
+            <if test="isDel != null ">
+                AND is_del = #{isDel}
+            </if>
+            AND is_del = 0
+        </where>
+    </sql>
+    <!-- 根据id查询，删除/更新前查询 -->
+    <select id="findById" parameterType="Long"
+            resultMap="ShoppingCartResult">
+        SELECT
+        <include refid="selectShoppingCartColumn"/>
+        FROM shopping_cart
+        WHERE id = #{id}
+    </select>
+    <!-- 通过条件查询 baseMapper接口继承 -->
+    <select id="searchByCondition"
+            parameterType="com.ByteAndHeartDance.shoppingcart.entity.ShoppingCartConditionEntity"
+            resultMap="ShoppingCartResult">
+        SELECT
+        <include refid="selectShoppingCartColumn"/>
+        FROM shopping_cart
+        <include refid="queryWhere"/>
+        <include refid="com.ByteAndHeartDance.shoppingcart.mapper.BaseMapper.paginationSql"/>
+    </select>
+    <!-- 统计数量 baseMapper接口继承 -->
+    <select id="searchCount"
+            parameterType="com.ByteAndHeartDance.shoppingcart.entity.ShoppingCartConditionEntity"
+            resultType="int">
+        SELECT
+        COUNT(*)
+        FROM shopping_cart
+        <include refid="queryWhere"/>
+    </select>
+
+    <!-- 更新购物车记录项-->
+    <update id="update" parameterType="com.ByteAndHeartDance.shoppingcart.entity.ShoppingCartEntity">
+        UPDATE shopping_cart
+        <trim prefix="SET">
+
+            <if test="productId != null ">
+                product_id = #{productId},
+            </if>
+
+            <if test="userId != null ">
+                user_id = #{userId},
+            </if>
+
+            <if test="quantity != null ">
+                quantity = #{quantity},
+            </if>
+
+            <if test="createUserId != null ">
+                create_user_id = #{createUserId},
+            </if>
+
+            <if test="createUserName != null  and createUserName != ''">
+                create_user_name = #{createUserName},
+            </if>
+
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+
+            <if test="updateUserId != null ">
+                update_user_id = #{updateUserId},
+            </if>
+
+            <if test="updateUserName != null  and updateUserName != ''">
+                update_user_name = #{updateUserName},
+            </if>
+
+            <if test="isDel != null ">
+                is_del = #{isDel},
+            </if>
+            update_time=now(3)
+        </trim>
+        WHERE id = #{id}
+    </update>
+    <!-- 逻辑删除，删除选中的列表项 -->
+    <delete id="deleteByIds" parameterType="Long">
+        UPDATE shopping_cart
+        SET is_del =
+        1,update_time=now(3),update_user_id=#{entity.updateUserId},update_user_name=#{entity.updateUserName}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 插入购物车记录项 -->
+    <insert id="insertShoppingCartRecord" parameterType="com.ByteAndHeartDance.shoppingcart.entity.ShoppingCartEntity">
+        INSERT INTO shopping_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="productId != null ">
+                product_id,
+            </if>
+            <if test="userId != null ">
+                user_id,
+            </if>
+            <if test="quantity != null ">
+                quantity,
+            </if>
+            create_user_id,
+            create_user_name,
+            create_time,
+            <if test="updateUserId != null ">
+                update_user_id,
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                update_user_name,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="isDel != null ">
+                is_del,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{GENERATE_ID},
+            <if test="productId != null ">
+                #{productId},
+            </if>
+            <if test="userId != null ">
+                #{userId},
+            </if>
+            <if test="quantity != null ">
+                #{quantity},
+            </if>
+            #{CURRENT_USER_ID},
+            #{CURRENT_USER_NAME},
+            now(3),
+            <if test="updateUserId != null ">
+                #{updateUserId},
+            </if>
+            <if test="updateUserName != null  and updateUserName != ''">
+                #{updateUserName},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime},
+            </if>
+            <if test="isDel != null ">
+                #{isDel},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据id查询，删除/更新前查询 -->
+    <select id="findByIds" parameterType="Long"
+            resultMap="ShoppingCartResult">
+        SELECT
+        <include refid="selectShoppingCartColumn"/>
+        FROM shopping_cart
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>
